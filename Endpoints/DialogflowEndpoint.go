@@ -59,10 +59,18 @@ func HandleWebhook(c *gin.Context, connections *map[string]*models.UserInfo) {
 	}
 
 	fmt.Println("Connection found writing to JSON, Webhook")
-	payload := *con[bodyStruct.Email]
-	payload.SessionID = wr.Session
+	payload := con[bodyStruct.Email]
+
+	if payload.SessionID != wr.Session {
+		payload.SessionID = wr.Session
+		payload.Intent = ""
+		payload.Parameter = nil
+		payload.Connection.WriteJSON(payload)
+	}
+
 	payload.Intent = queryIntent
 	payload.Parameter = queryParameters
+
 	//payload.JWT = security.CreateJwtToken()
 	payload.Connection.WriteJSON(payload)
 
