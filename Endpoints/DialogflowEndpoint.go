@@ -29,7 +29,7 @@ func HandleWebhook(c *gin.Context, connections *map[string]*models.UserInfo) {
 		c.Status(http.StatusBadRequest)
 		return
 	}
-
+	//fmt.Print(wr.String())
 	queryParameters := wr.GetQueryResult().GetParameters()
 	queryIntent := wr.GetQueryResult().GetIntent().GetDisplayName()
 	tokenPayloadResponse := wr.GetOriginalDetectIntentRequest().GetPayload().GetFields()
@@ -49,6 +49,7 @@ func HandleWebhook(c *gin.Context, connections *map[string]*models.UserInfo) {
 	// is not found, meaning there is no client to reach out to. We should respond to dialogflow telling
 	// user that connection is not establish, check client.
 	// If client terminates or shuts down, we need to remove the registered information
+
 	if con[bodyStruct.Email] == nil {
 		fmt.Println("Client connection is not established")
 		fullfillment := dialogflow.WebhookResponse{
@@ -59,7 +60,7 @@ func HandleWebhook(c *gin.Context, connections *map[string]*models.UserInfo) {
 	}
 
 	fmt.Println("Connection found writing to JSON, Webhook")
-	payload := con[bodyStruct.Email]
+	payload := *con[bodyStruct.Email]
 
 	if payload.SessionID != wr.Session {
 		payload.SessionID = wr.Session
@@ -77,5 +78,10 @@ func HandleWebhook(c *gin.Context, connections *map[string]*models.UserInfo) {
 	fullfillment := dialogflow.WebhookResponse{
 		FulfillmentText: " ",
 	}
+
 	c.JSON(http.StatusOK, fullfillment)
 }
+
+// func terminateAgentConnection(userEmail string, connections *map[string]*models.UserInfo, c *gin.Context) {
+// 	c.JSON(http.StatusOK)
+// }

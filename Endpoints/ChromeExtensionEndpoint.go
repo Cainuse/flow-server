@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strings"
 
 	utils "github.com/flow_server/Utils"
 
@@ -44,18 +45,25 @@ func clientToServerMessageHandler(connections *map[string]*models.UserInfo, conn
 			error := json.Unmarshal(p, &request)
 			utils.ErrorNilCheck(error)
 
+			//_, bodyStructValidationError := security.ValidateJwt(request.JWT)
+			// utils.ErrorInvalidCheck(bodyStructValidationError)
+			// if bodyStructValidationError != nil {
+			// 	return
+			// }
+
 			if (len(request.Email) > 0) && (request.Action == "Sign In") {
 				fmt.Println("Channel Created!")
+				email := strings.ToLower(request.Email)
 				connec := *connections
 
-				if connec[request.Email] == nil {
+				if connec[email] == nil {
 					fmt.Println("New Connection Created! Websocket")
-					connec[request.Email] = &models.UserInfo{
+					connec[email] = &models.UserInfo{
 						Connection: conn,
 					}
 				} else {
 					fmt.Println("Connection found, adding conn Websocket")
-					payload := connec[request.Email]
+					payload := connec[email]
 					payload.Connection = conn
 
 				}

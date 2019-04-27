@@ -19,7 +19,7 @@ func ValidateJwt(jwtToken string) (models.JwtBodyStruct, error) {
 	splitJWT := strings.Split(jwtToken, ".")
 	jwtHeader, _ := (jose.Base64Decode([]byte(splitJWT[0])))
 	jwtBody, _ := (jose.Base64Decode([]byte(splitJWT[1])))
-	// jwtSigniture, _ := (jose.Base64Decode([]byte(splitJWT[2])))
+	//jwtSigniture, _ := (jose.Base64Decode([]byte(splitJWT[2])))
 
 	headerStruct := models.JwtHeaderStruct{}
 	jwtBodyStruct := models.JwtBodyStruct{}
@@ -47,6 +47,15 @@ func validateAud(jwtBodyStruct models.JwtBodyStruct) bool {
 				break
 			}
 			valid = true
+			break
+		}
+	case "projectAcession2019FlowProject":
+		{
+			if jwtBodyStruct.Aud != "b12b5e97-08c5-4dd5-942b-648e9db2cf98" {
+				break
+			}
+			valid = true
+			break
 		}
 	default:
 		break
@@ -55,9 +64,6 @@ func validateAud(jwtBodyStruct models.JwtBodyStruct) bool {
 	return valid
 }
 
-/*//||
-//jwtBodyStruct.Aud != "178079389303-jdtfifkob381duk64fuppqp8004gk4u7.apps.googleusercontent.com"*/
-//"1004547079072-9hcr020dn0bnsvbfusgisad3iu28chk5.apps.googleusercontent.com"
 var mySignedKey = []byte("mysupersecretphrease")
 
 /*CreateJwtToken packages JSON payload to JWT format*/

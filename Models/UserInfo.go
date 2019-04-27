@@ -9,6 +9,7 @@ import (
 type Request struct {
 	Email  string `json:"email"`
 	Action string `json:"action"`
+	JWT    string `json:"JWT"`
 }
 
 type UserInfo struct {
