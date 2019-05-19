@@ -72,7 +72,7 @@ func HandleWebhook(c *gin.Context, connections *map[string]*models.UserInfo) {
 	payload.Intent = queryIntent
 	payload.Parameter = queryParameters
 
-	//payload.JWT = security.CreateJwtToken()
+	payload.JWT = security.CreateJwtToken()
 	payload.Connection.WriteJSON(payload)
 
 	fullfillment := dialogflow.WebhookResponse{

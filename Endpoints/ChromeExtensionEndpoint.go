@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"strings"
 
+	security "github.com/flow_server/Security"
 	utils "github.com/flow_server/Utils"
 
 	models "github.com/flow_server/Models"
@@ -45,11 +46,17 @@ func clientToServerMessageHandler(connections *map[string]*models.UserInfo, conn
 			error := json.Unmarshal(p, &request)
 			utils.ErrorNilCheck(error)
 
-			//_, bodyStructValidationError := security.ValidateJwt(request.JWT)
-			// utils.ErrorInvalidCheck(bodyStructValidationError)
-			// if bodyStructValidationError != nil {
-			// 	return
-			// }
+			valid := security.ValidateClientMessage(request.JWT)
+
+			if !valid {
+				return
+			}
+
+			_, bodyStructValidationError := security.ValidateJwt(request.JWT)
+			utils.ErrorInvalidCheck(bodyStructValidationError)
+			if bodyStructValidationError != nil {
+				return
+			}
 
 			if (len(request.Email) > 0) && (request.Action == "Sign In") {
 				fmt.Println("Channel Created!")

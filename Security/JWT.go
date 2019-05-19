@@ -93,3 +93,24 @@ func getClaim() jws.Claims {
 	claims.SetAudience("7eecb1a9-bf11-4134-8808-11eb94125031")
 	return claims
 }
+
+func ValidateClientMessage(tokenString string) bool {
+
+	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		// Don't forget to validate the alg is what you expect:
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
+		}
+
+		return mySignedKey, nil
+	})
+
+	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
+		fmt.Println(claims)
+		return true
+	} else {
+		fmt.Println(err)
+		return false
+	}
+
+}
