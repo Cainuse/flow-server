@@ -20,3 +20,7 @@ type JwtBodyStruct struct {
 	Exp           int    `json:"exp"`
 	Jti           string `json:"jti"`
 }
+
+type JwtSignitureStruct struct {
+	Iss string `json:"iss"`
+}

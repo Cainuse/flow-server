@@ -14,11 +14,13 @@ func main() {
 
 	connections := make(map[string]*models.UserInfo)
 
-	r.POST("/dialogflow", func(c *gin.Context) {
+	//Dialogflow port
+	r.POST("/3000", func(c *gin.Context) {
 		endpoints.HandleWebhook(c, &connections)
 	})
 
-	r.GET("/ws", func(c *gin.Context) {
+	//Client port
+	r.GET("/4000", func(c *gin.Context) {
 		endpoints.WebsocketHandler(c.Writer, c.Request, &connections)
 	})
 
