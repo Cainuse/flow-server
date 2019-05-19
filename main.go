@@ -14,17 +14,17 @@ func main() {
 
 	connections := make(map[string]*models.UserInfo)
 
-	//Dialogflow port
+	//Dialogflow endpoint
 	r.POST("/3000", func(c *gin.Context) {
 		endpoints.HandleWebhook(c, &connections)
 	})
 
-	//Client port
+	//Client endpoint
 	r.GET("/4000", func(c *gin.Context) {
 		endpoints.WebsocketHandler(c.Writer, c.Request, &connections)
 	})
 
-	if err = r.Run("localhost:9090"); err != nil {
+	if err = r.Run("35.183.198.157"); err != nil {
 		logrus.WithError(err).Fatal("Couldn't start server")
 	}
 }
