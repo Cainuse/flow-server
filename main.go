@@ -24,7 +24,7 @@ func main() {
 		endpoints.WebsocketHandler(c.Writer, c.Request, &connections)
 	})
 
-	if err = r.Run(":9090"); err != nil {
+	if err = r.Run(":443"); err != nil {
 		logrus.WithError(err).Fatal("Couldn't start server")
 	}
 }
