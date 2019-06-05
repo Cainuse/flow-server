@@ -24,8 +24,6 @@ func main() {
 		endpoints.WebsocketHandler(c.Writer, c.Request, &connections)
 	})
 
-	go r.RunTLS(":8443", "MyCertificate.crt", "MyKey.key")
-
 	if err = r.Run(":9090"); err != nil {
 		logrus.WithError(err).Fatal("Couldn't start server")
 	}
