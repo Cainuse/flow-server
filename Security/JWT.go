@@ -43,10 +43,12 @@ func validateAud(jwtBodyStruct models.JwtBodyStruct) bool {
 	switch jwtBodyStruct.Iss {
 	case "https://accounts.google.com":
 		{
-			if jwtBodyStruct.Aud != "178079389303-jdtfifkob381duk64fuppqp8004gk4u7.apps.googleusercontent.com" {
+			if (jwtBodyStruct.Aud == "178079389303-jdtfifkob381duk64fuppqp8004gk4u7.apps.googleusercontent.com") ||
+				(jwtBodyStruct.Aud == "147696450252-snu9kcnde8aegd2r9i2t81qmdo0v5da8.apps.googleusercontent.com") ||
+				(jwtBodyStruct.Aud == "1004547079072-9hcr020dn0bnsvbfusgisad3iu28chk5.apps.googleusercontent.com") {
+				valid = true
 				break
 			}
-			valid = true
 			break
 		}
 	case "projectAcession2019FlowProject":
