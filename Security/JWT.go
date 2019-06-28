@@ -70,10 +70,10 @@ var mySignedKey = []byte("mysupersecretphrease")
 
 /*CreateJwtToken packages JSON payload to JWT format*/
 func CreateJwtToken() string {
-	expires := time.Now().Add(time.Duration(10) * time.Second)
+	expires := time.Now().Add(time.Duration(10) * time.Second).UTC()
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"exp": expires.String(),
-		"iat": time.Now().String(),
+		"iat": time.Now().UTC().String(),
 		"iss": "flow_server",
 		"aud": "7eecb1a9-bf11-4134-8808-11eb94125031",
 	})
@@ -86,11 +86,11 @@ func CreateJwtToken() string {
 }
 
 func getClaim() jws.Claims {
-	expires := time.Now().Add(time.Duration(10) * time.Second)
+	expires := time.Now().Add(time.Duration(10) * time.Second).UTC()
 
 	claims := jws.Claims{}
 	claims.SetExpiration(expires)
-	claims.SetIssuedAt(time.Now())
+	claims.SetIssuedAt(time.Now().UTC())
 	claims.SetIssuer("flow_server")
 	claims.SetAudience("7eecb1a9-bf11-4134-8808-11eb94125031")
 	return claims
